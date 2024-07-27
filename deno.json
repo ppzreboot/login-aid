@@ -1,6 +1,6 @@
 {
   "name": "@ppz/login-aid",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "exports": "./mod.ts",
   "tasks": {
     "demo": "deno run --env --allow-env --allow-net ./demo/deno/main.ts",
