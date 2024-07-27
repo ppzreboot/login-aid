@@ -25,7 +25,7 @@ class Login_aid_github {
       access_token = data.access_token
       // console.debug('github access token received:', access_token)
     } catch(err) {
-      throw new Login_aid_error(Login_aid_error_code.github_retrieve_access_token, err)
+      throw new Login_aid_error(Login_aid_error_code.github_retrieve_access_token, err as Error)
     }
     try {
       // console.debug('requesting github userinfo')
@@ -37,7 +37,7 @@ class Login_aid_github {
       })
       return await res.json() as Github_userinfo
     } catch(err) {
-      throw new Login_aid_error(Login_aid_error_code.github_retrieve_userinfo, err)
+      throw new Login_aid_error(Login_aid_error_code.github_retrieve_userinfo, err as Error)
     }
   }
 }
