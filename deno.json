@@ -3,8 +3,7 @@
   "version": "0.0.6",
   "exports": "./mod.ts",
   "tasks": {
-    "demo": "deno run --env --allow-env --allow-net ./demo/deno/main.ts",
-    "build-npm": "deno run -A ./build/npm.ts"
+    "demo": "deno run --env --allow-env --allow-net ./demo/deno/main.ts"
   },
   "publish": {
     "include": [
@@ -13,8 +12,5 @@
       "README.md",
       "with-github.ts"
     ]
-  },
-  "imports": {
-    "@deno/dnt": "jsr:@deno/dnt@^0.41.2"
   }
 }
