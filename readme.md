@@ -1,6 +1,6 @@
 # login-aid.ts
 login aid with:
-+ github
++ github (unavailable from china)
 
 ### demo
 ##### deno

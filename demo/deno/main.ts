@@ -23,9 +23,11 @@ Deno.serve(async req => {
       console.log('code from user browser is sending to github for access token and then userinfo')
       const code = url.searchParams.get('code')
       if (!code) throw Error('no github code')
-      const userinfo = await with_github.login(code, 'http://localhost:8000/me')
-      console.log({ userinfo })
-      return html(`<p>name: ${userinfo.login}</p>`)
+      const userinfo = await with_github.login(code)
+      return html(`
+        <img src="${userinfo.avatar_url}">
+        <p>name: ${userinfo.login}, id: ${userinfo.id}</p>
+      `)
     default:
       return new Response('Not Found', { status: 404 })
   }
