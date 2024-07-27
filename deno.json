@@ -6,6 +6,13 @@
     "demo": "deno run --env --allow-env --allow-net ./demo/deno/main.ts",
     "build-npm": "deno run -A ./build/npm.ts"
   },
+  "publish": {
+    "include": [
+      "error.ts",
+      "mod.ts",
+      "with-github.ts"
+    ]
+  },
   "imports": {
     "@deno/dnt": "jsr:@deno/dnt@^0.41.2"
   }
