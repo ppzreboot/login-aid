@@ -19,7 +19,7 @@ Deno.serve(async req => {
           </li>
         </ul>
       `)
-    case '/login/github':
+    case '/login/github': { // case 里的 let 和 const 对所有 case 和 default 都有效，所以加大括号，制造块作用域
       console.log('code from user browser is sending to github for access token and then userinfo')
       const code = url.searchParams.get('code')
       if (!code) throw Error('no github code')
@@ -28,6 +28,7 @@ Deno.serve(async req => {
         <img src="${userinfo.avatar_url}">
         <p>name: ${userinfo.login}, id: ${userinfo.id}</p>
       `)
+    }
     default:
       return new Response('Not Found', { status: 404 })
   }

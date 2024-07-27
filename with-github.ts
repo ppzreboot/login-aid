@@ -21,7 +21,7 @@ class Login_aid_github {
           }
         })
       // console.debug('request sent')
-      const data = await res.json()
+      const data = await res.json() as { access_token: string }
       access_token = data.access_token
       // console.debug('github access token received:', access_token)
     } catch(err) {

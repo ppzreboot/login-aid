@@ -2,8 +2,13 @@
 login aid with:
 + github (unavailable from china)
 
+### build for npm
+``` bash
+deno task build-npm
+```
+
 ### demo
 ##### deno
 ``` bash
-deno run --env --allow-env --allow-net ./demo/deno/main.ts
+deno task demo
 ```
