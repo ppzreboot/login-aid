@@ -1,14 +1,30 @@
-// https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app
-
 import { Login_aid_error, Login_aid_error_code } from './error.ts'
 
+/**
+ * @module
+ * To login with github:  
+ * 1. Create your github APP at [here](https://github.com/settings/apps) and get your client id and client secret.
+ * 2. In your APP, direct the user to https://github.com/login/oauth/authorize, and add client id as a query parameter. For example: https://github.com/login/oauth/authorize?client_id=12345.
+ * 3. If the user accepts your authorization request, GitHub will redirect the user to one of the callback URLs in your app settings, and provide a `code` query parameter.
+ * 4. Your server will receive a request (redirection at previous step) with a `code` query parameter.
+ * 5. In your server, call `Login_aid_github::login(code)`, and you will get userinfo.
+ * 
+ * Details on [login with github](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app#using-the-device-flow-to-generate-a-user-access-tokehttps://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app).
+ */
+
+/** The github helper of login-aid.ts */
 export
 class Login_aid_github {
+  /**
+   * @param client_id Github APP's client id. 
+   * @param client_secret Github APP's client secret.
+   */
   constructor(
     private client_id: string,
     private client_secret: string,
   ) {}
 
+  /** Check the 5th step in module introduction. */
   async login(code: string): Promise<Github_userinfo> {
     let access_token: string
     try {
