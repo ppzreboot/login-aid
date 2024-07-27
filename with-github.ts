@@ -2,7 +2,7 @@ import { Login_aid_error, Login_aid_error_code } from './error.ts'
 
 /**
  * To login with github:
- * 1. Create your github APP at [here](https://github.com/settings/apps) and get your client id and client secret.
+ * 1. Create your github APP [here](https://github.com/settings/apps) and generate your client id and client secret.
  * 2. In your APP, direct the user to https://github.com/login/oauth/authorize, and add client id as a query parameter. For example: https://github.com/login/oauth/authorize?client_id=12345.
  * 3. If the user accepts your authorization request, GitHub will redirect the user to one of the callback URLs in your app settings, and provide a `code` query parameter.
  * 4. Your server will receive a request (redirection at previous step) with a `code` query parameter.
@@ -21,7 +21,6 @@ class Login_aid_github {
     private client_secret: string,
   ) {}
 
-  /** Check the 5th step in `Login_aid_github` introduction. */
   async login(code: string): Promise<Github_userinfo> {
     let access_token: string
     try {

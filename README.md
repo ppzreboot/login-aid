@@ -1,14 +1,6 @@
 # login-aid.ts
 login aid with:
-+ github (unavailable from china)
++ [github](https://jsr.io/@ppz/login-aid@latest/doc/~/Login_aid_github) (unavailable from china)
 
-### build for npm
-``` bash
-deno task build-npm
-```
-
-### demo
-##### deno
-``` bash
-deno task demo
-```
+[Document](https://jsr.io/@ppz/login-aid/doc)
+| [demo for deno](https://github.com/ppzreboot/login-aid.ts/tree/main/demo/deno)
