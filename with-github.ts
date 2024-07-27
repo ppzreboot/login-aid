@@ -9,7 +9,7 @@ class Login_aid_github {
     private client_secret: string,
   ) {}
 
-  async login(code: string) {
+  async login(code: string): Promise<Github_userinfo> {
     let access_token: string
     try {
       // console.debug('requesting github access token')
