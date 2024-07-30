@@ -6,6 +6,7 @@
 
 login with:
 + [github](https://jsr.io/@ppz/login-aid@latest/doc/~/Login_aid_github) (unavailable from china)
++ [twitter](https://jsr.io/@ppz/login-aid@latest/doc/~/Login_aid_twitter) (unavailable from china)
 
 ## Usage
 ### Install
@@ -30,5 +31,5 @@ import { Login_aid_github } from '@ppz/login-aid'
 const with_github = new Login_aid_github(github_client_id, github_client_secret)
 
 // And exchange code for userinfo.
-const userinfo = await with_github.login(code)
+const userinfo = await with_github.code2id(code)
 ```
