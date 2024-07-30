@@ -5,6 +5,7 @@
   "tasks": {
     "demo": "deno run --env --allow-env --allow-net ./demo/deno/main.ts"
   },
+  "imports": { "@std/encoding": "jsr:@std/encoding@^1.0.1" },
   "publish": {
     "include": [
       "error.ts",
