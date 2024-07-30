@@ -18,7 +18,7 @@ class Login_aid_twitter extends Login_aid_OAuth2<Twitter_userinfo> {
     this.basic_authorization = make_basic_authorization(client_id, client_secret)
   }
 
-  protected async obtain_access_token(code: string) {
+  protected async obtain_access_token(code: string): Promise<string> {
     try {
       const res = await fetch(`https://api.twitter.com/2/oauth2/token`, {
         method: 'POST',
@@ -42,7 +42,7 @@ class Login_aid_twitter extends Login_aid_OAuth2<Twitter_userinfo> {
     }
   }
 
-  protected async obtain_userinfo(access_token: string) {
+  protected async obtain_userinfo(access_token: string): Promise<Twitter_userinfo> {
     try {
       const res = await fetch(`https://api.twitter.com/2/users/me`, {
         headers: {

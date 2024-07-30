@@ -21,7 +21,7 @@ class Login_aid_github extends Login_aid_OAuth2<Github_userinfo> {
     this.authorize_url = 'https://github.com/login/oauth/authorize?client_id=' + client_id
   }
 
-  protected async obtain_access_token(code: string) {
+  protected async obtain_access_token(code: string): Promise<string> {
     try {
       const res = await fetch(
         `https://github.com/login/oauth/access_token?client_id=${
@@ -42,7 +42,7 @@ class Login_aid_github extends Login_aid_OAuth2<Github_userinfo> {
     }
   }
 
-  async obtain_userinfo(access_token: string) {
+  async obtain_userinfo(access_token: string): Promise<Github_userinfo> {
     try {
       const res = await fetch(`https://api.github.com/user`, {
         headers: {

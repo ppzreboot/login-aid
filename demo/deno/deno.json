@@ -3,6 +3,6 @@
     "demo": "deno run --env --allow-env --allow-net ./demo/deno/main.ts"
   },
   "imports": {
-    "@ppz/login-aid": "jsr:@ppz/login-aid@^0.0.7"
+    "@ppz/login-aid": "jsr:@ppz/login-aid@^0.1.1"
   }
 }
