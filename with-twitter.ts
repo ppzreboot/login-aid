@@ -1,44 +1,55 @@
+import { Login_aid_OAuth2, make_basic_authorization } from './base.ts'
 import { Login_aid_error, Login_aid_error_code } from './error.ts'
-import { encodeBase64 } from '@std/encoding'
+
 /**
  * ### Login with X(twitter)
+ * OAuth2.0
+ * 
  * Details on [login with X](https://developer.x.com/en/docs/authentication/oauth-2-0/authorization-code).
  */
 export
-class Login_aid_X {
-  constructor(
-    private client_id: string,
-    private client_secret: string,
-  ) {}
+class Login_aid_twitter extends Login_aid_OAuth2<Twitter_userinfo> {
+  public authorize_url: string
+  private basic_authorization: string
+  constructor(client_id: string, client_secret: string, private callback: string) {
+    super()
+    this.authorize_url = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${callback}&scope=users.read&state=state&code_challenge=challenge&code_challenge_method=plain`
+    this.basic_authorization = make_basic_authorization(client_id, client_secret)
+  }
 
-  async login(code: string): Promise<Twitter_userinfo> {
-    let access_token: string
+  protected async obtain_access_token(code: string) {
     try {
       const res = await fetch(`https://api.twitter.com/2/oauth2/token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Basic ' + encodeBase64(new TextEncoder().encode(this.client_id + ':' + this.client_secret)),
+          Authorization: this.basic_authorization,
         },
         body: JSON.stringify({
           code,
           grant_type: 'authorization_code',
-          redirect_uri: 'http://localhost:8000/login/x',
+          redirect_uri: this.callback,
           code_verifier: 'challenge',
         }),
       })
+      if (!res.ok)
+        throw Error(await res.text())
       const data = await res.json() as { access_token: string }
-      access_token = data.access_token
+      return data.access_token
     } catch(err) {
       throw new Login_aid_error(Login_aid_error_code.twitter_retrieve_access_token, err as Error)
     }
+  }
+
+  protected async obtain_userinfo(access_token: string) {
     try {
       const res = await fetch(`https://api.twitter.com/2/users/me`, {
         headers: {
-          // Accept: 'application/json',
           Authorization: 'Bearer ' + access_token,
         },
       })
+      if (!res.ok)
+        throw Error(await res.text())
       const { data } = await res.json() as { data: Twitter_userinfo }
       return data
     } catch(err) {
