@@ -13,7 +13,8 @@ class Login_aid_twitter extends Login_aid_OAuth2<Twitter_userinfo> {
   private basic_authorization: string
   constructor(client_id: string, client_secret: string, private callback: string) {
     super()
-    this.authorize_url = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${callback}&scope=users.read&state=state&code_challenge=challenge&code_challenge_method=plain`
+    // 此处 scope 要有 users.read 用来获取 userid；tweet.read 没有回报错，原因未知
+    this.authorize_url = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${callback}&scope=tweet.read%20users.read&state=state&code_challenge=challenge&code_challenge_method=plain`
     this.basic_authorization = make_basic_authorization(client_id, client_secret)
   }
 
