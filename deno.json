@@ -1,17 +1,16 @@
 {
   "name": "@ppz/login-aid",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "exports": "./mod.ts",
-  "tasks": {
-    "demo": "deno run --env --allow-env --allow-net ./demo/deno/main.ts"
-  },
   "imports": { "@std/encoding": "jsr:@std/encoding@^1.0.1" },
   "publish": {
     "include": [
+      "base.ts",
       "error.ts",
       "mod.ts",
       "README.md",
-      "with-github.ts"
+      "with-github.ts",
+      "with-twitter.ts"
     ]
   }
 }

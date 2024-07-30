@@ -1,5 +1,4 @@
-import { Login_aid_github } from '../../mod.ts'
-import { Login_aid_twitter } from '../../with-twitter.ts'
+import { Login_aid_twitter, Login_aid_github } from '@ppz/login-aid'
 
 const github_client_id = Deno.env.get('github_client_id')
 const github_client_secret = Deno.env.get('github_client_secret')
