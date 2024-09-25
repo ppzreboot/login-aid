@@ -70,27 +70,64 @@ class Login_aid_shopify extends Login_aid_OAuth2<Shopify_userinfo> {
         },
         body: JSON.stringify({
           operationName: 'Retrieve Userinfo',
-          query: 'query { customer { emailAddress { emailAddress }}}',
+          query: `query {
+            customer {
+              id
+              displayName
+              phoneNumber {
+                phoneNumber
+              }
+              imageUrl
+              emailAddress {
+                emailAddress
+              }
+            }
+          }`,
           variables: {},
         }),
       })
       if (!res.ok)
         throw Error(await res.text())
-      return await res.json() as Shopify_userinfo
+      const data = await res.json() as Raw_customer
+      const customer = data.data.customer
+      return {
+        id: customer.id,
+        name: customer.displayName,
+        phone: customer.phoneNumber?.phoneNumber,
+        avatar: customer.imageUrl,
+        email: customer.emailAddress.emailAddress,
+      }
     } catch(err) {
       throw new Login_aid_error(Login_aid_error_code.shopify_retrieve_userinfo, err as Error)
     }
   }
 }
 
-/** Raw data from shopify. */
-export
-interface Shopify_userinfo {
+/** Raw data from shopify.
+ * 
+ * https://shopify.dev/docs/api/customer/2024-07/queries/customer#returns
+ */
+interface Raw_customer {
   data: {
     customer: {
+      id: string
+      displayName: string
+      phoneNumber?: {
+        phoneNumber: string
+      }
+      imageUrl: string
       emailAddress: {
         emailAddress: string
       }
     }
   }
+}
+
+export
+interface Shopify_userinfo {
+  id: string
+  name: string
+  email: string
+  phone?: string
+  avatar: string
 }

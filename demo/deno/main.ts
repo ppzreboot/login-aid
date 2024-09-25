@@ -41,7 +41,10 @@ Deno.serve(async req => {
       if (!code) throw Error('no shopify auth_code')
       
       const userinfo = await with_shopify.code2id(code)
-      return html(userinfo.data.customer.emailAddress.emailAddress)
+      return html(`
+        <img src="${userinfo.avatar}">
+        <p>name: ${userinfo.name}, id: ${userinfo.id}, email: ${userinfo.email}</p>
+      `)
     }
     // case '/login/github': { // case 里的 let 和 const 对所有 case 和 default 都有效，所以加大括号，制造块作用域
     //   // console.log('code from user browser is sending to github for access token and then userinfo')
