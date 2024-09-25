@@ -15,7 +15,7 @@ class Login_aid_shopify extends Login_aid_OAuth2<Shopify_userinfo> {
     this.authorize_url = `https://shopify.com/${shop_id}/auth/oauth/authorize`
   }
 
-  public get_authorize_url() {
+  public get_authorize_url(): string {
     const params = new URLSearchParams()
     params.append('scope', 'openid email https://api.customers.com/auth/customer.graphql')
     params.append('client_id', this.client_id)
