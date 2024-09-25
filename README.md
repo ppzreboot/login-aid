@@ -7,6 +7,7 @@
 login with:
 + [github](https://jsr.io/@ppz/login-aid@latest/doc/~/Login_aid_github) (unavailable from china)
 + [twitter](https://jsr.io/@ppz/login-aid@latest/doc/~/Login_aid_twitter) (unavailable from china)
++ shopify
 
 ## Usage
 ### Install

@@ -1,5 +1,5 @@
 // import { Login_aid_shopify } from '@ppz/login-aid'
-import { Login_aid_shopify } from '../../mod.ts'
+import { Login_aid_shopify } from '../../lib/mod.ts'
 
 // const github_client_id = Deno.env.get('github_client_id')
 // const github_client_secret = Deno.env.get('github_client_secret')
