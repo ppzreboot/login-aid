@@ -10,7 +10,7 @@ import { Login_aid_error, Login_aid_error_code } from './error.ts'
 export
 class Login_aid_shopify extends Login_aid_OAuth2<Shopify_userinfo> {
   public authorize_url: string
-  constructor(private client_id: string, private client_secret: string, shop_id: string) {
+  constructor(private client_id: string, private client_secret: string, private callback: string, private shop_id: string) {
     super()
     this.authorize_url = `https://shopify.com/${shop_id}/auth/oauth/authorize`
   }
@@ -20,7 +20,7 @@ class Login_aid_shopify extends Login_aid_OAuth2<Shopify_userinfo> {
     params.append('scope', 'openid email https://api.customers.com/auth/customer.graphql')
     params.append('client_id', this.client_id)
     params.append('response_type', 'code')
-    params.append('redirect_uri', this.client_id)
+    params.append('redirect_uri', this.callback)
 
     {
       // https://shopify.dev/docs/api/customer#generating-state
@@ -34,14 +34,21 @@ class Login_aid_shopify extends Login_aid_OAuth2<Shopify_userinfo> {
 
   protected async obtain_access_token(code: string): Promise<string> {
     try {
+      const body = new URLSearchParams()
+      body.append('grant_type', 'authorization_code')
+      body.append('client_id', this.client_id)
+      body.append('redirect_uri', this.callback,)
+      body.append('code', code)
+
       const res = await fetch(
-        `https://github.com/login/oauth/access_token?client_id=${
-          this.client_id}&client_secret=${this.client_secret}&code=${code}`,
+        `https://shopify.com/${this.shop_id}/auth/oauth/token`,
         {
           method: 'POST',
           headers: {
-            Accept: 'application/json',
+            'content-type': 'application/x-www-form-urlencoded',
+            'Authorization': `Basic ${btoa(`${this.client_id}:${this.client_secret}`)}`,
           },
+          body,
         },
       )
       if (!res.ok)
@@ -49,33 +56,41 @@ class Login_aid_shopify extends Login_aid_OAuth2<Shopify_userinfo> {
       const data = await res.json() as { access_token: string }
       return data.access_token
     } catch(err) {
-      throw new Login_aid_error(Login_aid_error_code.github_retrieve_access_token, err as Error)
+      throw new Login_aid_error(Login_aid_error_code.shopify_retrieve_access_token, err as Error)
     }
   }
 
   async obtain_userinfo(access_token: string): Promise<Shopify_userinfo> {
     try {
-      const res = await fetch(`https://api.github.com/user`, {
+      const res = await fetch(`https://shopify.com/${this.shop_id}/account/customer/api/2024-07/graphql`, {
+        method: 'post',
         headers: {
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + access_token,
+          'Content-Type': 'application/json',
+          Authorization: access_token,
         },
+        body: JSON.stringify({
+          operationName: 'Retrieve Userinfo',
+          query: 'query { customer { emailAddress { emailAddress }}}',
+          variables: {},
+        }),
       })
       if (!res.ok)
         throw Error(await res.text())
       return await res.json() as Shopify_userinfo
     } catch(err) {
-      throw new Login_aid_error(Login_aid_error_code.github_retrieve_userinfo, err as Error)
+      throw new Login_aid_error(Login_aid_error_code.shopify_retrieve_userinfo, err as Error)
     }
   }
 }
 
-/** Raw data from github. */
+/** Raw data from shopify. */
 export
 interface Shopify_userinfo {
-  login: string
-  id: number
-  avatar_url: string
-  type: string
-  email: string
+  data: {
+    customer: {
+      emailAddress: {
+        emailAddress: string
+      }
+    }
+  }
 }

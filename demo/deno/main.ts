@@ -18,9 +18,10 @@ import { Login_aid_shopify } from '../../mod.ts'
 const shopify_client_id = Deno.env.get('shopify_client_id')
 const shopify_client_secret = Deno.env.get('shopify_client_secret')
 const shopify_callback = Deno.env.get('shopify_callback')
-if (!shopify_client_id || !shopify_client_secret || !shopify_callback)
+const shopify_shop_id = Deno.env.get('shopify_shop_id')
+if (!shopify_client_id || !shopify_client_secret || !shopify_callback || !shopify_shop_id)
   throw Error('no shopify client id or secret or callback')
-const with_shopify = new Login_aid_shopify(shopify_client_id, shopify_client_secret, shopify_callback)
+const with_shopify = new Login_aid_shopify(shopify_client_id, shopify_client_secret, shopify_callback, shopify_shop_id)
 
 Deno.serve(async req => {
   const url = new URL(req.url)
@@ -30,7 +31,7 @@ Deno.serve(async req => {
         <ul>
           <li>
             <a href="${with_shopify.get_authorize_url()}">
-              login with github
+              login with shopify
             </a>
           </li>
         </ul>
@@ -40,7 +41,7 @@ Deno.serve(async req => {
       if (!code) throw Error('no shopify auth_code')
       
       const userinfo = await with_shopify.code2id(code)
-      return html(userinfo.toString())
+      return html(userinfo.data.customer.emailAddress.emailAddress)
     }
     // case '/login/github': { // case 里的 let 和 const 对所有 case 和 default 都有效，所以加大括号，制造块作用域
     //   // console.log('code from user browser is sending to github for access token and then userinfo')

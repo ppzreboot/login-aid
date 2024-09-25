@@ -2,7 +2,7 @@
   "name": "@ppz/login-aid",
   "version": "0.1.2",
   "exports": "./mod.ts",
-  "imports": { "@std/encoding": "jsr:@std/encoding@^1.0.1" },
+  "imports": { "@std/encoding": "jsr:@std/encoding@^1.0.5" },
   "publish": {
     "include": [
       "base.ts",

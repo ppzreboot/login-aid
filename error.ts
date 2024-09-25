@@ -19,4 +19,9 @@ enum Login_aid_error_code {
   twitter_retrieve_access_token,
   /** Error on retrieving twitter userinfo. */
   twitter_retrieve_userinfo,
+
+  /** Error on retrieving shopify access token */
+  shopify_retrieve_access_token,
+  /** Error on retrieving shopify userinfo */
+  shopify_retrieve_userinfo,
 }
